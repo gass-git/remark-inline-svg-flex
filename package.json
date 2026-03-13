@@ -1,0 +1,38 @@
+{
+  "name": "rehype-svg-inline",
+  "version": "0.0.1",
+  "description": "Lightweight, ESM-first, TS ready rehype plugin for inlining SVG images",
+  "keywords": [
+    "unified",
+    "rehype",
+    "plugin",
+    "rehype-plugin",
+    "inline",
+    "svg",
+    "image",
+    "img",
+    "html"
+  ],
+  "homepage": "https://github.com/gass-git/rehype-svg-inline#readme",
+  "bugs": {
+    "url": "https://github.com/gass-git/rehype-svg-inline/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gass-git/rehype-svg-inline.git"
+  },
+  "license": "MIT",
+  "author": "gass-git",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "tsc": "^2.0.4"
+  },
+  "dependencies": {
+    "mdast": "^2.3.2",
+    "unified": "^11.0.5"
+  }
+}
