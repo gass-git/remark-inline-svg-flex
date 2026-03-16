@@ -1,36 +1,46 @@
 import type { Plugin } from 'unified';
 import type { Root, Image } from 'mdast';
-import path, { relative } from 'node:path';
+import path from 'node:path';
 import fs from 'node:fs';
+import { visit } from 'unist-util-visit';
 
-const remarkInlineSvg: Plugin<[], Root, Root> = function () {
+const remarkInlineSvg: Plugin<[string?, string?], Root, Root> = (
+  relativePath = '',
+  customHtmlWrapper = '',
+) => {
   const baseDirectory = process.cwd();
+  const options = { relativePath, customHtmlWrapper };
 
-  // These might be a options
-  const relativePath = '';
-  const wrapInCenterDiv = false;
-
-  return function transformer(tree: Root) {
-    visit(tree, 'image', (node: Image, index, parent: any | undefined) => {
-      if (!node.url?.endsWith('.svg')) return;
-      if (index === undefined || !parent) return;
+  return function transformer(tree: Root): void {
+    visit(tree, 'image', (node: Image, index: number, parent: any | undefined) => {
+      if (!node.url?.endsWith('.svg') || !index || !parent) return;
 
       try {
-        const svgPath = path.resolve(baseDirectory, relativePath + node.url);
+        const svgPath = path.resolve(baseDirectory, options.relativePath + node.url);
         const svgContent = fs.readFileSync(svgPath, 'utf8');
+        let HTML = svgContent;
 
-        let val = svgContent;
-
-        if (wrapInCenterDiv) {
-          val = `<div align="center">${svgContent}</div>`;
+        if (customHtmlWrapper) {
+          HTML = wrapInCustomHtmlWrapper(svgContent, customHtmlWrapper);
         }
 
-        parent.children[index] = { type: 'html', value: val };
+        parent.children[index] = { type: 'html', value: HTML };
       } catch (error) {
         console.warn(error);
       }
     });
   };
 };
+
+function wrapInCustomHtmlWrapper(content: string, customHtmlWrapper: string): string {
+  const i = customHtmlWrapper.lastIndexOf('</');
+  const w = customHtmlWrapper;
+
+  if (i === -1) {
+    throw new Error(`Invalid HTML wrapper`);
+  }
+
+  return w.slice(0, i) + content + w.slice(i);
+}
 
 export { remarkInlineSvg };
