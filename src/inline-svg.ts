@@ -18,13 +18,13 @@ const remarkInlineSvg: Plugin<[string?, string?], Root, Root> = (
       try {
         const svgPath = path.resolve(baseDirectory, options.relativePath + node.url);
         const svgContent = fs.readFileSync(svgPath, 'utf8');
-        let HTML = svgContent;
 
-        if (customHtmlWrapper) {
-          HTML = wrapInCustomHtmlWrapper(svgContent, customHtmlWrapper);
-        }
-
-        parent.children[index] = { type: 'html', value: HTML };
+        parent.children[index] = {
+          type: 'html',
+          value: customHtmlWrapper
+            ? wrapInCustomHtmlWrapper(svgContent, customHtmlWrapper)
+            : svgContent,
+        };
       } catch (error) {
         console.warn(error);
       }
