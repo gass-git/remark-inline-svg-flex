@@ -1,4 +1,4 @@
-> 🚧 **Work in progress** This framework is still under active development. Expect changes.
+> 🚧 **Work in progress** This plugin is still under active development. Expect changes.
 
 # remark-svg-inline
 [![MIT License](https://img.shields.io/npm/l/rehype-svg-inline.svg?style=flat-square)](https://github.com/gass-git/rehype-svg-inline/blob/main/LICENSE)
