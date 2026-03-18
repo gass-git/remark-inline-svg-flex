@@ -3,25 +3,32 @@ import type { Root, Image } from 'mdast';
 import path from 'node:path';
 import fs from 'node:fs';
 import { visit } from 'unist-util-visit';
+import { VFile } from 'vfile';
+
+type Options = {
+  assetsDir: string;
+  wrapper: string;
+};
 
 const inlineSvg: Plugin<[string?, string?], Root, Root> = (
-  relativePath = '',
-  wrapper = '',
+  assetsDir = '',
+  wrapper = `<figure class="inline-svg"></figure>`,
 ) => {
-  const baseDirectory = process.cwd();
-  const options = { relativePath, wrapper };
+  const options: Options = { assetsDir, wrapper };
 
-  return function transformer(tree: Root): void {
+  return function transformer(tree: Root, file: VFile): void {
     visit(tree, 'image', (node: Image, index: number, parent: any | undefined) => {
       if (!node.url?.endsWith('.svg') || index == null || !parent) return;
 
+      const markdownFileDir = path.dirname(file.history[0]);
+
       try {
-        const svgPath = path.resolve(baseDirectory, options.relativePath + node.url);
+        const svgPath = resolvePath(options, node, markdownFileDir);
         const svgContent = fs.readFileSync(svgPath, 'utf8');
 
         parent.children[index] = {
           type: 'html',
-          value: wrapper ? wrap(svgContent, wrapper) : svgContent,
+          value: wrap(svgContent, wrapper),
         };
       } catch (error) {
         console.warn(error);
@@ -39,6 +46,19 @@ function wrap(content: string, customHtmlWrapper: string): string {
   }
 
   return w.slice(0, i) + content + w.slice(i);
+}
+
+function resolvePath(options: Options, node: Image, markdownFileDir: string): string {
+  if (path.isAbsolute(node.url)) {
+    // Treat as relative to project root.
+    return path.resolve(process.cwd(), node.url);
+  } else if (options.assetsDir) {
+    // If path is not absolute, use the assets directory provided in options.
+    return path.resolve(process.cwd(), options.assetsDir, node.url);
+  } else {
+    // Treat as relative to markdown file directory.
+    return path.resolve(markdownFileDir, node.url);
+  }
 }
 
 export { inlineSvg };
