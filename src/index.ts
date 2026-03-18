@@ -1,1 +1,1 @@
-export * from './inline-svg';
+export * from './plugin';

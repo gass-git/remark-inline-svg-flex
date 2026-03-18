@@ -4,12 +4,12 @@ import path from 'node:path';
 import fs from 'node:fs';
 import { visit } from 'unist-util-visit';
 
-const remarkInlineSvg: Plugin<[string?, string?], Root, Root> = (
+const inlineSvg: Plugin<[string?, string?], Root, Root> = (
   relativePath = '',
-  customHtmlWrapper = '',
+  wrapper = '',
 ) => {
   const baseDirectory = process.cwd();
-  const options = { relativePath, customHtmlWrapper };
+  const options = { relativePath, wrapper };
 
   return function transformer(tree: Root): void {
     visit(tree, 'image', (node: Image, index: number, parent: any | undefined) => {
@@ -21,9 +21,7 @@ const remarkInlineSvg: Plugin<[string?, string?], Root, Root> = (
 
         parent.children[index] = {
           type: 'html',
-          value: customHtmlWrapper
-            ? wrapInCustomHtmlWrapper(svgContent, customHtmlWrapper)
-            : svgContent,
+          value: wrapper ? wrap(svgContent, wrapper) : svgContent,
         };
       } catch (error) {
         console.warn(error);
@@ -32,7 +30,7 @@ const remarkInlineSvg: Plugin<[string?, string?], Root, Root> = (
   };
 };
 
-function wrapInCustomHtmlWrapper(content: string, customHtmlWrapper: string): string {
+function wrap(content: string, customHtmlWrapper: string): string {
   const i = customHtmlWrapper.lastIndexOf('</');
   const w = customHtmlWrapper;
 
@@ -43,4 +41,4 @@ function wrapInCustomHtmlWrapper(content: string, customHtmlWrapper: string): st
   return w.slice(0, i) + content + w.slice(i);
 }
 
-export { remarkInlineSvg };
+export { inlineSvg };
