@@ -4,7 +4,7 @@
 
 [![MIT License](https://img.shields.io/npm/l/rehype-svg-inline.svg?style=flat-square)](https://github.com/gass-git/remark-inline-svg-flex/blob/main/LICENSE)
 
-Flexible Remark plugin that inlines and optimizes SVGs with SVGO, featuring customizable path resolution and wrappers.
+Flexible Remark plugin that inlines and optimizes SVGs with SVGO, featuring customizable path resolution, wrappers and others.
 
 ## Installation
 
@@ -12,8 +12,9 @@ Flexible Remark plugin that inlines and optimizes SVGs with SVGO, featuring cust
 
 ## Options
 
-| Key                       | Default value                          | Description                                                |
-| ------------------------- | -------------------------------------- | ---------------------------------------------------------- |
-| [`suffix`](#suffix)       | `".svg"`                               | The plugin only processes SVG files ending with this value |
-| [`assetsDir`](#assetsDir) | undefined                              | Base directory where SVG files are located                 |
-| [`wrapper`](#wrapper)     | `<figure class="inline-svg"></figure>` | HTML wrapper used to wrap the inlined SVG                  |
+| Key                       | type                  | Default value                            | Description                                                |
+| ------------------------- | --------------------- | ---------------------------------------- | ---------------------------------------------------------- |
+| [`suffix`](#suffix)       | `string`              | `'.svg'`                                 | The plugin only processes SVG files ending with this value |
+| [`assetsDir`](#assetsDir) | `string`, `undefined` | `undefined`                              | Base directory where SVG files are located                 |
+| [`wrapper`](#wrapper)     | `string`              | `'<figure class="inline-svg"></figure>'` | HTML wrapper used to wrap the inlined SVG                  |
+| [`svgo`](#wrapper)        | `boolean`             | `true`                                   | Enable or disable SVG optimization                         |

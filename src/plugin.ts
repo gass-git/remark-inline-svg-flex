@@ -12,8 +12,9 @@ const inlineSvg: Plugin<[string?, string?], Root, Root> = (
   suffix = '.svg',
   assetsDir = undefined,
   wrapper = '<figure class="inline-svg"></figure>',
+  svgo = true,
 ) => {
-  const options: Options = { suffix, assetsDir, wrapper };
+  const options: Options = { suffix, assetsDir, wrapper, svgo };
 
   return function transformer(tree: Root, file: VFile): void {
     visit(tree, 'image', (node, i, parent) => {
@@ -24,11 +25,11 @@ const inlineSvg: Plugin<[string?, string?], Root, Root> = (
       try {
         const svgPath = resolvePath(options.assetsDir, node, markdownFileDir);
         const svgString = fs.readFileSync(svgPath, 'utf8');
-        const optimizedSvgString = optimizeSvg(svgString).data;
+        const svgStringToWrap = svgo ? optimizeSvg(svgString).data : svgString;
 
         parent.children[i] = {
           type: 'html',
-          value: wrap(optimizedSvgString, wrapper),
+          value: wrap(svgStringToWrap, wrapper),
         };
       } catch (error) {
         console.warn(error);
