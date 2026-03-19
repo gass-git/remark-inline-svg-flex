@@ -34,6 +34,7 @@
     "@types/mdast": "^4.0.4",
     "@types/node": "^25.5.0",
     "prettier": "^3.8.1",
+    "svgo": "^4.0.1",
     "typescript": "^5.9.3",
     "unified": "^11.0.5",
     "vfile": "^6.0.3",
