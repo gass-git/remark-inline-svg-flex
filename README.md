@@ -6,30 +6,117 @@
 
 Flexible Remark plugin that inlines and optimizes SVGs with SVGO, featuring customizable path resolution, wrappers and others.
 
+- [remark-inline-svg-flex](#remark-inline-svg-flex)
+  - [Features](#features)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Options](#options)
+    - [`suffix`](#suffix)
+    - [`assetsDir`](#assetsdir)
+    - [`wrapper`](#wrapper)
+    - [`svgo`](#svgo)
+  - [SVGO configuration](#svgo-configuration)
+
+## Features
+
+### ✔️ Robust and customizable path resolution
+
+- If the SVG path is absolute, it is used as-is.
+- If the path is relative and assetsDir is defined, it is resolved relative to that directory.
+- Otherwise, the path is resolved relative to the Markdown file’s location.
+
+### ✔️ Custom HTML wrapper support
+
+Use your own custom HTML wrapper, no wrapper at all, or the default:
+
+```
+<figure class="inline-svg"></figure>
+```
+
+### ✔️ Optional SVG optimization
+
+SVG optimization can be disabled if needed e.g. if SVGO removes required attributes.
+
+### ✔️ Configurable suffix
+
+By default, only files ending in `.svg` are processed. You can customize the suffix to suit your needs.
+
 ## Installation
 
 ```
 npm i remark-inline-svg-flex
 ```
 
-## Robust path resolution:
+## Usage
 
-First, it checks whether the SVG path is absolute. If it is, it uses it as-is.
-If not, and the assetsDir option is defined, the path is resolved relative to that directory. Otherwise, the path is treated as relative to the Markdown file’s location.
+Say we have the following file `example.md`:
+
+```markdown
+# Hello
+
+This is a test markdown document.
+
+![some svg](some.svg)
+```
+
+And our module `example.js` looks as follows:
+
+```js
+import { remark } from 'remark';
+import { readFile } from 'node:fs/promises';
+import { inlineSvg } from 'remark-inline-svg-flex';
+
+const markdown = await readFile(_path, { encoding: 'utf8' });
+
+return await remark().use(remarkParse).use(inlineSvg).process(markdown);
+```
+
+Now running `node example.js` yields:
+
+```markdown
+# Hello
+
+This is a test markdown document.
+
+<figure class="inline-svg">
+  <svg fill="none" viewBox="0 0 250 250" role="img" aria-hidden="true"><circle cx="125" cy="125" r="100" fill="#BA5B5B"/></svg>
+</figure>
+```
 
 ## Options
 
 | Key                       | type                  | Default value                            | Description                                                |
 | ------------------------- | --------------------- | ---------------------------------------- | ---------------------------------------------------------- |
 | [`suffix`](#suffix)       | `string`              | `'.svg'`                                 | The plugin only processes SVG files ending with this value |
-| [`assetsDir`](#assetsDir) | `string`, `undefined` | `undefined`                              | Base directory where SVG files are located                 |
+| [`assetsDir`](#assetsdir) | `string \| undefined` | `undefined`                              | Base directory where SVG files are located                 |
 | [`wrapper`](#wrapper)     | `string`              | `'<figure class="inline-svg"></figure>'` | HTML wrapper used to wrap the inlined SVG                  |
-| [`svgo`](#wrapper)        | `boolean`             | `true`                                   | Enable or disable SVG optimization                         |
+| [`svgo`](#svgo)           | `boolean`             | `true`                                   | Enable or disable SVG optimization                         |
 
-### HTML Wrapper
+### `suffix`
 
-- If you don't want any wrapper set the wrapper option to an empty string `''`.
+Only image nodes whose URL ends with the specified suffix will be processed. Defaults to `'.svg'`.
 
-### assetsDir
+### `assetsDir`
 
-- assetsDir by default is `undefined` and it will resolve paths
+Base directory where SVG files are located. By default is `undefined` and it will resolve paths either in an absolute or relative manner.
+
+### `wrapper`
+
+Defines the HTML wrapper used around the inlined SVG.
+
+- Set to an empty string `''` to disable wrapping entirely.
+- Defaults to:
+
+```
+<figure class="inline-svg"></figure>
+```
+
+### `svgo`
+
+The SVG's are optimized by default. Disable it by setting it to `false`.
+
+## SVGO configuration
+
+```
+{ plugins: ['preset-default', 'removeXMLNS', 'removeDimensions'] }
+```
