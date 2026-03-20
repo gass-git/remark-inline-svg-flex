@@ -10,6 +10,11 @@ Flexible Remark plugin that inlines and optimizes SVGs with SVGO, featuring cust
 
 `npm i remark-inline-svg-flex`
 
+## Robust path resolution:
+
+First, it checks whether the SVG path is absolute. If it is, it uses it as-is.
+If not, and the assetsDir option is defined, the path is resolved relative to that directory. Otherwise, the path is treated as relative to the Markdown file’s location.
+
 ## Options
 
 | Key                       | type                  | Default value                            | Description                                                |
@@ -18,3 +23,11 @@ Flexible Remark plugin that inlines and optimizes SVGs with SVGO, featuring cust
 | [`assetsDir`](#assetsDir) | `string`, `undefined` | `undefined`                              | Base directory where SVG files are located                 |
 | [`wrapper`](#wrapper)     | `string`              | `'<figure class="inline-svg"></figure>'` | HTML wrapper used to wrap the inlined SVG                  |
 | [`svgo`](#wrapper)        | `boolean`             | `true`                                   | Enable or disable SVG optimization                         |
+
+### HTML Wrapper
+
+- If you don't want any wrapper set the wrapper option to an empty string `''`.
+
+### assetsDir
+
+- assetsDir by default is `undefined` and it will resolve paths

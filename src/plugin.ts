@@ -14,22 +14,17 @@ const inlineSvg: Plugin<[Options], Root, Root> = ({
   wrapper = '<figure class="inline-svg"></figure>',
   svgo = true,
 }) => {
-  const options: Options = { suffix, assetsDir, wrapper, svgo };
-
   return function transformer(tree: Root, file: VFile): void {
     visit(tree, 'image', (node, i, parent) => {
       if (!node.url?.endsWith(suffix) || !parent) return;
 
-      const markdownFileDir = path.dirname(file.history[0]);
-
       try {
-        const svgPath = resolvePath(options.assetsDir, node, markdownFileDir);
-        const svgString = fs.readFileSync(svgPath, 'utf8');
-        const svgStringToWrap = svgo ? optimizeSvg(svgString).data : svgString;
+        const svgPath = resolvePath(assetsDir, node, path.dirname(file.history[0]));
+        const svgString = processSvg(svgPath, svgo);
 
         parent.children[i] = {
           type: 'html',
-          value: wrap(svgStringToWrap, wrapper),
+          value: wrapper ? wrap(svgString, wrapper) : svgString,
         };
       } catch (error) {
         console.warn(error);
@@ -38,18 +33,27 @@ const inlineSvg: Plugin<[Options], Root, Root> = ({
   };
 };
 
-function wrap(content: string, customHtmlWrapper: string): string {
-  const i = customHtmlWrapper.lastIndexOf('</');
-  const w = customHtmlWrapper;
+function processSvg(path: string, svgo: boolean): string {
+  const svgString = fs.readFileSync(path, 'utf8');
+
+  return svgo ? optimizeSvg(svgString).data : svgString;
+}
+
+function wrap(svgString: string, htmlWrapper: string): string {
+  const i = htmlWrapper.lastIndexOf('</');
 
   if (i === -1) {
     throw new Error(`Invalid HTML wrapper`);
   }
 
-  return w.slice(0, i) + content + w.slice(i);
+  return htmlWrapper.slice(0, i) + svgString + htmlWrapper.slice(i);
 }
 
-function resolvePath(assetsDir: string, node: Image, markdownFileDir: string): string {
+function resolvePath(
+  assetsDir: string | undefined,
+  node: Image,
+  markdownFileDir: string,
+): string {
   if (path.isAbsolute(node.url)) {
     // Treat as relative to project root.
     return path.resolve(process.cwd(), node.url);
