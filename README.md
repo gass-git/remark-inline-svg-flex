@@ -2,7 +2,9 @@
 
 # remark-inline-svg-flex
 
-[![MIT License](https://img.shields.io/npm/l/rehype-svg-inline.svg?style=flat-square)](https://github.com/gass-git/remark-inline-svg-flex/blob/main/LICENSE)
+[![Downloads](https://img.shields.io/npm/dm/remark-inline-svg-flex.svg?style=flat-square)](https://www.npmjs.com/package/remark-inline-svg-flex)
+[![version](https://img.shields.io/npm/v/remark-inline-svg-flex.svg?style=flat-square)](https://www.npmjs.com/package/remark-inline-svg-flex)
+[![MIT License](https://img.shields.io/npm/l/remark-inline-svg-flex.svg?style=flat-square)](https://github.com/gass-git/remark-inline-svg-flex/blob/main/LICENSE)
 
 Flexible Remark plugin that inlines and optimizes SVGs with SVGO, featuring customizable path resolution, wrappers and others.
 
