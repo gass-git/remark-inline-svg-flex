@@ -8,7 +8,9 @@ Flexible Remark plugin that inlines and optimizes SVGs with SVGO, featuring cust
 
 ## Installation
 
-`npm i remark-inline-svg-flex`
+```
+npm i remark-inline-svg-flex
+```
 
 ## Robust path resolution:
 
