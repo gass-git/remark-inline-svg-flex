@@ -86,7 +86,9 @@ Now running `node example.js` yields:
 This is a test markdown document.
 
 <figure class="inline-svg">
-  <svg fill="none" viewBox="0 0 250 250" role="img" aria-hidden="true"><circle cx="125" cy="125" r="100" fill="#BA5B5B"/></svg>
+  <svg width="800" height="800" fill="none" viewBox="0 0 16 16">
+  ...
+  </svg>
 </figure>
 ```
 

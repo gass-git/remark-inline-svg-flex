@@ -1,6 +1,6 @@
 import { remark } from 'remark';
 import remarkParse from 'remark-parse';
-import { inlineSvg } from '../../src/plugin';
+import { remarkInlineSvg } from '../../src/plugin';
 import type { Options } from '../../src/types';
 import { VFile } from 'vfile';
 import path from 'node:path';
@@ -9,9 +9,9 @@ function processMarkdown(md: string, options?: Options): Promise<VFile> {
   const processor = remark().use(remarkParse);
 
   if (options) {
-    processor.use(inlineSvg, options);
+    processor.use(remarkInlineSvg, options);
   } else {
-    processor.use(inlineSvg);
+    processor.use(remarkInlineSvg);
   }
 
   /**

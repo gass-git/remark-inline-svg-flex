@@ -19,8 +19,6 @@ describe('inline svg - basic', () => {
     expect(stringFile).not.toContain('<!--');
     expect(stringFile).not.toContain('<?xml');
     expect(stringFile).not.toContain('xmlns');
-    expect(stringFile).not.toContain('height');
-    expect(stringFile).not.toContain('width');
   });
 
   it('does not optimize svg if svgo is disabled', async () => {
