@@ -1,7 +1,7 @@
 import { processMarkdown } from '../utils/processor';
 import { describe, it, expect } from 'vitest';
 
-describe('inline svg - basic', () => {
+describe('inline svg', () => {
   it('replaces svg image with inline svg', async () => {
     const file = await processMarkdown('![some svg](alien.svg)');
     expect(String(file)).toContain('<svg');

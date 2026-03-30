@@ -39,7 +39,7 @@ const remarkInlineSvg: Plugin<[Options?], Root, Root> = (
         );
         const svgString = processSvg(svgPath, options.svgo);
 
-        if (i) {
+        if (typeof i === 'number') {
           parent.children[i] = {
             type: 'html',
             value: options.wrapper ? wrap(svgString, options.wrapper) : svgString,
