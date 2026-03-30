@@ -7,7 +7,6 @@ on:
     paths:
       - package.json
       - src/**
-      - .github/workflows/**
 
 jobs:
   release:
@@ -39,7 +38,7 @@ jobs:
           node-version: 24
           registry-url: https://registry.npmjs.org/
 
-      - name: build, publish and release
+      - name: test, build, publish and release
         if: steps.tagcheck.outputs.exists == 'false'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
