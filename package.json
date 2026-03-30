@@ -1,6 +1,6 @@
 {
   "name": "remark-inline-svg-flex",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Customizable Remark plugin to inline and optimize SVGs with SVGO, with robust path resolution.",
   "keywords": [
     "remark",
