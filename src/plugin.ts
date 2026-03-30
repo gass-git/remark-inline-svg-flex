@@ -88,7 +88,7 @@ function resolvePath(
   if (path.isAbsolute(node.url)) {
     return path.resolve(process.cwd(), node.url);
   } else if (assetsDir) {
-    return path.resolve(process.cwd(), assetsDir, node.url);
+    return path.resolve(process.cwd(), normalizePath(assetsDir), node.url);
   } else {
     return path.resolve(markdownFileDir ?? process.cwd(), node.url);
   }
@@ -100,6 +100,10 @@ function optimizeSvg(svgString: string): Output {
   return optimize(svgString, {
     plugins: ['preset-default', 'removeXMLNS'],
   });
+}
+
+function normalizePath(path: string): string {
+  return path.endsWith('/') ? path : path + '/';
 }
 
 export { remarkInlineSvg };
