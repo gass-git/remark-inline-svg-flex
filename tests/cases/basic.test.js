@@ -31,4 +31,9 @@ describe('inline svg', () => {
     expect(stringFile).toContain('height');
     expect(stringFile).toContain('width');
   });
+
+  it('works properly with custom suffix passed as option', async () => {
+      const file = await processMarkdown('![some svg](alien.inline.svg)', {suffix: '.inline.svg'});
+      expect(String(file)).toContain('<svg');
+    });
 });
