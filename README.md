@@ -17,6 +17,7 @@ Flexible Remark plugin that inlines and optimizes SVGs with SVGO, featuring cust
     - [`assetsDir`](#assetsdir)
     - [`wrapper`](#wrapper)
     - [`svgo`](#svgo)
+  - [Paths supported](#path-supported)
   - [SVGO configuration](#svgo-configuration)
 
 ## Features
@@ -121,6 +122,20 @@ Defines the HTML wrapper used around the inlined SVG.
 ### `svgo`
 
 The SVG's are optimized by default. Disable it by setting it to `false`.
+
+## Path supported
+
+Remote URLs `http://`, `https://` and other external URLs are ignored.
+
+Examples of supported paths:
+
+```
+example.svg
+/example.svg
+/tests/assets/example.svg
+./example.svg
+../assets/example.svg
+```
 
 ## SVGO configuration
 

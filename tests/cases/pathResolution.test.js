@@ -21,4 +21,14 @@ describe('path resolution', () => {
     const file = await processMarkdown('![some svg](../assets/alarm.svg)');
     expect(String(file)).toContain('<svg');
   });
+
+  it('do NOT inline an SVG with a https URL', async () => {
+    const file = await processMarkdown('![some svg](https://example.com/example.svg)');
+    expect(String(file)).toContain('![some svg]');
+  });
+
+   it('do NOT inline an SVG with a http URL', async () => {
+    const file = await processMarkdown('![some svg](http://example.com/example.svg)');
+    expect(String(file)).toContain('![some svg]');
+  });
 });

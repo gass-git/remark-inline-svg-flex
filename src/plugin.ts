@@ -29,7 +29,7 @@ const remarkInlineSvg: Plugin<[Options?], Root, Root> = (
 
   return function transformer(tree: Root, vFile: VFile): void {
     visit(tree, 'image', (node, i, parent) => {
-      if (!node.url?.endsWith(options.suffix) || !parent) return;
+      if (!node.url?.endsWith(options.suffix) || !parent || isHttpUrl(node.url)) return;
 
       try {
         const svgPath = resolvePath(
@@ -121,6 +121,15 @@ function normalizePath(path: string): string {
   }
 
   return normalizedPath;
+}
+
+function isHttpUrl(url: string): boolean {
+  try {
+    const parsed = new URL(url);
+    return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+  } catch {
+    return false;
+  }
 }
 
 export { remarkInlineSvg };
