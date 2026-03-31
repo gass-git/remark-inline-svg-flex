@@ -7,6 +7,7 @@ on:
     paths:
       - package.json
       - src/**
+      - workflows/**
 
 jobs:
   release:
@@ -43,7 +44,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          npm ci
+          npm i
           npm run tests
           npm run build
           git config user.name "github-actions"
