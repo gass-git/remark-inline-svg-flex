@@ -55,39 +55,49 @@ npm i remark-inline-svg-flex
 Say we have the following file `example.md`:
 
 ```markdown
-# Hello
+# Some Title
 
 This is a test markdown document.
 
-![some svg](some.svg)
+![some svg](./alien.svg)
 ```
 
-And our module `example.js` looks as the one below (it is recommended to pass the markdown directory `path` to `process()` so that the plugin can resolve relative paths correctly).
+And our module `example.js` looks as the one below:
 
 ```js
 import { remark } from 'remark';
-import { readFile } from 'node:fs/promises';
+import remarkParse from 'remark-parse';
 import { remarkInlineSvg } from 'remark-inline-svg-flex';
+import { readFile } from 'node:fs/promises';
 
-const markdown = await readFile(path, { encoding: 'utf8' });
+const filePath = './tests/fixtures/example.md';
+const markdownString = await readFile(filePath, { encoding: 'utf8' });
 
-return await remark()
-  .use(remarkParse)
-  .use(remarkInlineSvg)
-  .process({ value: markdown, path: path });
+/**
+ * `filePath` is used as the virtual file path so that relative links
+ * inside the markdown file can be resolved correctly by the plugin.
+ */
+async function myProcess(markdown, filePath) {
+  return await remark()
+    .use(remarkParse)
+    .use(remarkInlineSvg)
+    .process({ value: markdown, path: filePath });
+}
+
+const result = await myProcess(markdownString, filePath);
+
+console.log(String(result.value));
 ```
 
 Now running `node example.js` yields:
 
 ```markdown
-# Hello
+# Some Title
 
 This is a test markdown document.
 
 <figure class="inline-svg">
-  <svg width="800" height="800" fill="none" viewBox="0 0 16 16">
-  ...
-  </svg>
+  <svg width="800" height="800" fill="none" viewBox="0 0 16 16"><path fill="#000" fill-rule="evenodd" d="m8 16-4.458-3.662A6.96 6.96 0 0 1 1 6.96C1 3.116 4.156 0 8 0s7 3.116 7 6.96a6.96 6.96 0 0 1-2.542 5.378zM3 6h2a2 2 0 0 1 2 2v1L3 7.5zm8 0a2 2 0 0 0-2 2v1l4-1.5V6z" clip-rule="evenodd"/></svg>
 </figure>
 ```
 

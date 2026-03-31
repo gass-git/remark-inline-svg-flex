@@ -5,7 +5,7 @@ import type { Options } from '../../src/types';
 import { VFile } from 'vfile';
 import path from 'node:path';
 
-function processMarkdown(md: string, options?: Options): Promise<VFile> {
+async function processMarkdown(md: string, options?: Options): Promise<VFile> {
   const processor = remark().use(remarkParse);
 
   if (options) {
