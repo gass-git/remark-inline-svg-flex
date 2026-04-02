@@ -1,5 +1,3 @@
-> ⚠️ Beta Nearing v1.0.0 — Still under development! APIs may change.
-
 # remark-inline-svg-flex
 
 [![Downloads](https://img.shields.io/npm/dm/remark-inline-svg-flex.svg?style=flat-square)](https://www.npmjs.com/package/remark-inline-svg-flex)
